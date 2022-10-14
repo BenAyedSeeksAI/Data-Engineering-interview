@@ -1,52 +1,24 @@
+from operator import ge
 from model import Arbre
 import pandas as pd
 import plotly.express as xp
 from dash import Dash, html, dcc
 
 
-def getData():
-    dataContainer = []
-    data = Arbre.select()
-    for tree in data:
-        result = [
-            tree.Adresse,
-            tree.Arrondissement,
-            tree.Circonference,
-            tree.ComplementAdresse,
-            tree.Domanialite,
-            tree.Espece,
-            tree.Genre,
-            tree.Hauteur,
-            tree.Idbase,
-            tree.LibelleFrancais,
-            tree.GeometrieX,
-            tree.GeometrieY,
-            tree.Pepiniere,
-            tree.Remarquable,
-            tree.TypeEmplacement
-        ]
-        dataContainer.append(result)
-    return dataContainer
 
-def getDomanialite():
+def getProjectedData(columns):
     dataContainer = {}
-    dataContainer["Domanialite"] = []
-    for tree in Arbre.select():
-        dataContainer["Domanialite"].append(tree.Domanialite)
-    return pd.DataFrame(data= dataContainer)
+    for col in columns:
+        dataContainer[col] = []
+    query = Arbre.select().dicts()
+    for row in query:
+        for col in columns:
+            dataContainer[col].append(row[col])
+    return pd.DataFrame(data=dataContainer)
 
-def getCirconferenceHauteurDomanialite():
-    dataContainer = {}
-    dataContainer["Circonference"] = []
-    dataContainer["Hauteur"] = []
-    dataContainer["Domanialite"] = []
-    for tree in Arbre.select():
-        dataContainer["Circonference"].append(tree.Circonference)
-        dataContainer["Domanialite"].append(tree.Domanialite)
-        dataContainer["Hauteur"].append(tree.Hauteur)
-    return pd.DataFrame(data= dataContainer)
+
 def ScatterPlot():
-    df = getCirconferenceHauteurDomanialite()
+    df = getProjectedData(["Hauteur","Circonference","Domanialite"])
     fig = xp.scatter(df,
                      x="Hauteur",
                      y="Circonference",
@@ -55,7 +27,7 @@ def ScatterPlot():
     scatter_plot = dcc.Graph(figure=fig)
     return scatter_plot
 def PiePlot():
-    df = getDomanialite()
+    df = getProjectedData(["Domanialite"])
     fig = xp.pie(df,
                  names= "Domanialite",
                  title= "Commbien de Domanialite sont-ils?")
