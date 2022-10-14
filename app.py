@@ -65,7 +65,7 @@ app = Dash(__name__)
 app.layout = html.Div(children=[
     html.H1(children='Arbre Remarquables dashboard'),
     html.Div(children='''
-        Dash: on 2 figures graphiques
+        Dash: on a 2 figures graphiques
     '''),
     ScatterPlot(),
     PiePlot(),
