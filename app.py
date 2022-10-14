@@ -10,6 +10,7 @@ def getProjectedData(columns):
     dataContainer = {}
     for col in columns:
         dataContainer[col] = []
+    # retourne les rows de base de données comme des dictionnaire
     query = Arbre.select().dicts()
     for row in query:
         for col in columns:
