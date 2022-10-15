@@ -1,5 +1,6 @@
-from operator import ge
 from model import Arbre
+from config import INTRO
+
 import pandas as pd
 import plotly.express as xp
 from dash import Dash, html, dcc
@@ -53,9 +54,7 @@ def BarPlot():
 app = Dash(__name__)
 app.layout = html.Div(children=[
     html.H1(children='Arbre Remarquables dashboard'),
-    html.Div(children='''
-        Dash: on a 2 figures graphiques
-    '''),
+    html.Div(children=[html.P(children= INTRO)]),
     ScatterPlot(),
     PiePlot(),
     BarPlot(),
