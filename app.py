@@ -18,12 +18,19 @@ def getProjectedData(columns):
     return pd.DataFrame(data=dataContainer)
 
 
+def getHauteurMaximumParLibelle():
+    data = getProjectedData(["Hauteur", "LibelleFrancais"])
+    data = pd.DataFrame(data.groupby("LibelleFrancais",as_index=False).agg(
+          MaximumHauteur = ("Hauteur","max")
+    ))
+    return data
+
 def ScatterPlot():
-    df = getProjectedData(["Hauteur","Circonference","Domanialite"])
+    df = getProjectedData(["Hauteur","Circonference","LibelleFrancais"])
     fig = xp.scatter(df,
                      x="Hauteur",
                      y="Circonference",
-                     color="Domanialite",
+                     color="LibelleFrancais",
                      title= "Correlation entre Hauteur et circonference")
     scatter_plot = dcc.Graph(figure=fig)
     return scatter_plot
@@ -34,6 +41,15 @@ def PiePlot():
                  title= "Commbien de Domanialite sont-ils?")
     pie_plot = dcc.Graph(figure=fig)
     return pie_plot
+
+def BarPlot():
+    df = getHauteurMaximumParLibelle()
+    fig = xp.bar(df,
+                 x="LibelleFrancais",
+                 y="MaximumHauteur",
+                 title="Hauteur maximum par libelle")
+    bar_plot = dcc.Graph(figure=fig)
+    return bar_plot
 app = Dash(__name__)
 app.layout = html.Div(children=[
     html.H1(children='Arbre Remarquables dashboard'),
@@ -42,6 +58,7 @@ app.layout = html.Div(children=[
     '''),
     ScatterPlot(),
     PiePlot(),
+    BarPlot(),
 ])
 
 if __name__ == '__main__':
