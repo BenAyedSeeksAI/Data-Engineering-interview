@@ -18,8 +18,5 @@ class Arbre(Model):
     Pepiniere = CharField()
     Remarquable = BooleanField()
     TypeEmplacement = CharField()
-
-
-
     class Meta:
         database = db
