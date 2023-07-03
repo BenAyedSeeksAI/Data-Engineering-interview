@@ -2,7 +2,7 @@ from model import Arbre, db
 from config import URLARBRES
 import requests as req
 import json
-from pprint import pprint
+
 
 def SetupDB():
     print("setting up database ...")

@@ -37,6 +37,7 @@ def ScatterPlot():
                      title= "Correlation entre Hauteur et circonference")
     scatter_plot = dcc.Graph(figure=fig)
     return scatter_plot
+
 def PiePlot():
     df = getProjectedData(["Domanialite"])
     fig = xp.pie(df,
